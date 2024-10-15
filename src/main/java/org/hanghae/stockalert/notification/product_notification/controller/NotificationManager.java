@@ -6,7 +6,6 @@ import org.hanghae.stockalert.notification.product_notification.dto.Notification
 import org.hanghae.stockalert.notification.product_notification.service.Consumer;
 import org.hanghae.stockalert.notification.product_notification.service.Producer;
 import org.hanghae.stockalert.notification.product_user_notification.entity.ProductUserNotification;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;

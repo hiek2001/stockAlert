@@ -28,7 +28,6 @@ public class NotificationManagerConfig {
 
     private final ProductUserNotificationHistoryService userNotificationHistoryService;
     private final CacheService cacheService;
-    private final ProductService productService;
     private final ProductNotificationHistoryRepository productHistoryRepository;
 
     @Bean
@@ -38,7 +37,7 @@ public class NotificationManagerConfig {
 
     @Bean
     public Consumer consumer() {
-        return new Consumer(notiDeque(), notificationBucket(), userNotificationHistoryService, cacheService, productHistoryRepository, productService);
+        return new Consumer(notiDeque(), notificationBucket(), userNotificationHistoryService, cacheService, productHistoryRepository);
     }
 
     @Bean

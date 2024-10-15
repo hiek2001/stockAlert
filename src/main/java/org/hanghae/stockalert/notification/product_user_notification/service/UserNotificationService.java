@@ -13,7 +13,6 @@ public class UserNotificationService {
     private ProductUserNotificationRepository userNotificationRepository;
 
     public List<Long> getUserNotifications(Long productId) {
-       // return userNotificationRepository.findAllByProductId(productId);
-        return userNotificationRepository.findUserIdByProductId(productId);
+        return userNotificationRepository.findUserIdByProductIdOrderByUpdatedAtDesc(productId);
     }
 }

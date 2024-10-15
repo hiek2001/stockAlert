@@ -39,6 +39,7 @@ public class ProductUserNotification {
         this.userId = Long.valueOf(String.valueOf(userId));
         this.isNotificationEnabled = true;
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void endElement() {

@@ -8,7 +8,6 @@ import org.hanghae.stockalert.notification.product_notification.repository.Produ
 import org.hanghae.stockalert.notification.product_user_notification.entity.ProductUserNotification;
 import org.hanghae.stockalert.notification.product_user_notification.service.ProductUserNotificationHistoryService;
 
-import org.hanghae.stockalert.product.service.ProductService;
 
 import java.util.concurrent.BlockingDeque;
 
@@ -20,22 +19,19 @@ public class Consumer implements Runnable {
 
     private final ProductUserNotificationHistoryService userNotificationHistoryService;
     private final CacheService cacheService;
-    private final ProductService productService;
 
     private final BlockingDeque<ProductUserNotification> queue;
     private final Bucket bucket;
 
     private ProductUserNotification notification;
     private NotificationStatus status;
-    private ProductNotificationHistory productNotificationHistory;
 
-    public Consumer(BlockingDeque<ProductUserNotification> productUserNotifications, Bucket bucket, ProductUserNotificationHistoryService userNotificationHistoryService, CacheService cacheService, ProductNotificationHistoryRepository productHistoryRepository,ProductService productService) {
+    public Consumer(BlockingDeque<ProductUserNotification> productUserNotifications, Bucket bucket, ProductUserNotificationHistoryService userNotificationHistoryService, CacheService cacheService, ProductNotificationHistoryRepository productHistoryRepository) {
         this.userNotificationHistoryService = userNotificationHistoryService;
         this.bucket = bucket;
         this.queue = productUserNotifications;
         this.cacheService = cacheService;
         this.productHistoryRepository = productHistoryRepository;
-        this.productService = productService;
     }
 
 
@@ -60,7 +56,7 @@ public class Consumer implements Runnable {
                     sendRestockNotification(notification); // 알림 전송
 
                     // 유저별 알림 히스토리 저장
-                    int restock_rounds = productService.getProductRestockRounds(notification.getProductId());
+                    int restock_rounds = productHistoryRepository.findRestockRoundsByProductId(notification.getProductId());
                     userNotificationHistoryService.saveUserNotificationHistory(notification.getUserId(), notification.getProductId(), restock_rounds);
 
                     // 마지막 요청일 경우

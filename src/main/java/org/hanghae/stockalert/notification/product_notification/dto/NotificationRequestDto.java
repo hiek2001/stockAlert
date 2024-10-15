@@ -10,11 +10,9 @@ import java.util.List;
 public class NotificationRequestDto {
     private Long productId;
     private List<Long> users;
-    private NotificationStatus status;
 
-    public NotificationRequestDto(Long productId, List<Long> users, NotificationStatus status) {
+    public NotificationRequestDto(Long productId, List<Long> users) {
         this.productId = productId;
         this.users = users;
-        this.status = status;
     }
 }

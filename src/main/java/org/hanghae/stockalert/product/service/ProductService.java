@@ -38,35 +38,11 @@ public class ProductService {
         // 상품별 재입고 알림 히스토리 저장
         notificationHistoryService.saveProductHistory(productId, product.getRestock_rounds(), NotificationStatus.IN_PROGRESS);
 
-        NotificationStatus status = cacheService.getNotificationStatus(productId); // 캐시에서 알림 전송 상태 가져오기
-        if(status == null) { // 캐시에 없으면
-            status = notificationHistoryService.findStatusByProductId(productId);
-            cacheService.saveNotificationStatus(productId, status); // 캐시에 저장
-        }
-
         // 재입고 신청한 유저 목록 가져오기
-        //List<ProductUserNotification> userNotifications = userNotificationService.getUserNotifications(productId);
         List<Long> userIdNotifications = userNotificationService.getUserNotifications(productId);
 
-        NotificationRequestDto requestDto = new NotificationRequestDto(productId, userIdNotifications, status);
+        NotificationRequestDto requestDto = new NotificationRequestDto(productId, userIdNotifications);
         notificationManager.notifyRestock(requestDto);
-
-        // 상품 재입고 히스토리의 알람 상태 업데이트하기 위해 가져온 것
-//        ProductNotificationHistory productNotificationHistory = notificationHistoryService.getProductNotificationHistory(productId);
-//        for (ProductUserNotification userNotification : userNotifications) { // 유저 목록을 토대로 알림 전송
-//            if(product.isSoldOut()) {
-//                productNotificationHistory.updateSoldOutHistory(NotificationStatus.CANCELED_BY_SOLD_OUT, userNotification.getUserId());
-//                break;
-//            }
-//
-//            // 알림 전송 중 로직 추가
-//
-//            // 알림 전송 중, 유저별 알림 히스토리 저장
-//            userNotificationHistoryService.saveUserNotificationHistory(userNotification.getUserId(), userNotification.getProductId(),product.getRestock_rounds());
-//        }
-//
-//        // 알림 전송 완료
-//        productNotificationHistory.completedNotification(NotificationStatus.COMPLETED);
     }
 
     @Transactional
@@ -77,7 +53,4 @@ public class ProductService {
         product.sell(quantity);
     }
 
-    public int getProductRestockRounds(Long productId) {
-        return productRepository.findRestockRoundsById(productId);
-    }
 }

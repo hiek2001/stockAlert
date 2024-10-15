@@ -1,0 +1,30 @@
+services:
+  mysql:
+    container_name: mysql-container
+    image: mysql/mysql-server:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: stockalert
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: 1234
+      TZ: 'Asia/Seoul'
+    ports:
+      - "13306:3306"
+    networks:
+      - spartacourse_test_network
+
+  spring-server:
+    restart: always
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    ports:
+      - "18080:18080"
+    depends_on:
+      - mysql
+    networks:
+      - spartacourse_test_network
+
+networks:
+  spartacourse_test_network:
+    driver: bridge
